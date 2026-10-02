@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { NavLink, useLocation, useNavigate, Outlet } from 'react-router-dom'
+import { NavLink, Link, useLocation, useNavigate, Outlet } from 'react-router-dom'
 import {
   LayoutDashboard,
   FilePlus2,
@@ -13,6 +13,9 @@ import {
   LogOut,
   Menu,
   X,
+  ArrowLeft,
+  Home,
+  ExternalLink,
 } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import type { UserRole } from '@/types'
@@ -241,6 +244,7 @@ export interface LayoutProps {
 }
 
 export function Layout({ children, title }: LayoutProps) {
+  const navigate                     = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
   const closeMobile                  = useCallback(() => setMobileOpen(false), [])
   const toggleMobile                 = useCallback(() => setMobileOpen((v) => !v), [])
@@ -288,25 +292,57 @@ export function Layout({ children, title }: LayoutProps) {
 
       {/* ── Main content ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Mobile top bar */}
-        <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-navy-900 border-b border-navy-700 shrink-0">
-          <button
-            onClick={toggleMobile}
-            aria-label="Open navigation menu"
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-sidebar"
-            className="p-2 rounded-lg text-navy-200 hover:text-white hover:bg-navy-700 transition-colors"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
+        {/* Universal Top Bar with Back, Home & Navigation */}
+        <header className="flex items-center justify-between px-4 sm:px-6 py-2.5 bg-white border-b border-gray-200 shrink-0 shadow-xs">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={toggleMobile}
+              aria-label="Open navigation menu"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-sidebar"
+              className="lg:hidden p-1.5 rounded-lg text-navy-800 hover:bg-gray-100 transition-colors"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
 
-          <div className="flex items-center gap-2">
-            <DocaEmblem />
-            <span className="text-white font-bold text-sm">NAWI</span>
+            {/* Back Button */}
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:text-navy-900 hover:bg-gray-100 border border-gray-200 transition-colors active:scale-95"
+              title="Go back to previous page"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-gray-500" />
+              <span>Back</span>
+            </button>
+
+            {/* Home (Dashboard) Button */}
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-gray-700 hover:text-navy-900 hover:bg-gray-100 border border-gray-200 transition-colors active:scale-95"
+              title="Go to Dashboard Home"
+            >
+              <Home className="w-3.5 h-3.5 text-gray-500" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+
+            {title && (
+              <span className="hidden md:inline-block text-xs font-bold text-gray-400 border-l border-gray-200 pl-3 uppercase tracking-wider">
+                {title}
+              </span>
+            )}
           </div>
 
-          {/* Placeholder right slot for symmetry */}
-          <span className="w-9" aria-hidden="true" />
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-800 hover:text-[#FF9933] px-2.5 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
+              title="Go to DoCA Public Portal Landing Page"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+              <span className="hidden sm:inline">Public Portal</span>
+            </Link>
+          </div>
         </header>
 
         {/* Page content */}

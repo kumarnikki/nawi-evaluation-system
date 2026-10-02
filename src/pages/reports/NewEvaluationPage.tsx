@@ -5,7 +5,7 @@
  *        Test Applicability → Test Modules → Review & Submit
  */
 import React, { useState, useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -24,6 +24,8 @@ import {
   BookOpen,
   Star,
   Send,
+  ArrowLeft,
+  Home,
 } from 'lucide-react'
 import mockDb from '@/data/mockDb'
 import { getAllTestApplicabilities } from '@/engine/applicability'
@@ -1168,19 +1170,36 @@ export default function NewEvaluationPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Header with Back and Home */}
       <header className="bg-[#0d2137] text-white px-6 py-4 shadow-lg">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold tracking-tight">New Type Evaluation Report</h1>
-            <p className="text-xs text-gray-300 mt-0.5">NAWI — OIML R 76-1:2006 / R 76-2:1993</p>
+        <div className="max-w-5xl mx-auto flex items-center justify-between flex-wrap gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate('/reports')}
+              className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+              title="Back to Reports"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <Link
+              to="/dashboard"
+              className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+              title="Dashboard Home"
+            >
+              <Home size={18} />
+            </Link>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight">New Type Evaluation Report</h1>
+              <p className="text-xs text-gray-300 mt-0.5">NAWI — OIML R 76-1:2006 / R 76-2:1993</p>
+            </div>
           </div>
           <button
             type="button"
             onClick={() => navigate('/reports')}
             className="text-xs text-gray-300 hover:text-white underline"
           >
-            Cancel
+            Cancel Evaluation
           </button>
         </div>
       </header>

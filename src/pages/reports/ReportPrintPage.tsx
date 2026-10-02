@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Printer, Download, AlertTriangle, FileText } from 'lucide-react'
+import { ArrowLeft, Printer, Download, AlertTriangle, FileText, Home } from 'lucide-react'
 import mockDb from '@/data/mockDb'
 import type { Report } from '@/types'
 import { exportReportToDocx } from '@/export/docxExport'
@@ -60,16 +60,25 @@ export default function ReportPrintPage() {
     <div className="min-h-screen bg-gray-100 print:bg-white text-navy-950">
       {/* Top Floating Action Bar (Hidden during print) */}
       <div className="no-print sticky top-0 z-50 bg-[#0d2137] text-white px-6 py-3 shadow-md flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate(`/reports/${report.id}`)}
+            onClick={() => navigate(-1)}
             className="flex items-center gap-1.5 text-xs font-semibold text-gray-300 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
+            title="Go Back"
           >
             <ArrowLeft size={14} />
-            Back to Report View
+            Back
           </button>
-          <div className="border-l border-white/20 pl-3">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-300 hover:text-white px-2.5 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
+            title="Dashboard Home"
+          >
+            <Home size={14} />
+            Home
+          </Link>
+          <div className="border-l border-white/20 pl-3 ml-1">
             <h1 className="text-sm font-bold font-mono text-white flex items-center gap-2">
               <FileText size={16} className="text-[#FF9933]" />
               {report.reportNo}

@@ -19,6 +19,7 @@ import {
   AlertTriangle,
   Eye,
   Printer,
+  Home,
 } from 'lucide-react'
 import mockDb from '@/data/mockDb'
 import type { Report, ReportStatus, AuditLogEntry, TestModuleResult } from '@/types'
@@ -498,15 +499,23 @@ export default function ReportDetailPage() {
       <header className="bg-[#0d2137] text-white px-6 py-4 shadow-lg">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-start justify-between flex-wrap gap-3">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => navigate('/reports')}
-                className="text-gray-300 hover:text-white transition-colors"
+                onClick={() => navigate(-1)}
+                className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                title="Go Back"
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft size={16} />
               </button>
-              <div>
+              <Link
+                to="/dashboard"
+                className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                title="Dashboard Home"
+              >
+                <Home size={16} />
+              </Link>
+              <div className="border-l border-white/20 pl-2 ml-1">
                 <h1 className="font-mono text-base font-bold tracking-tight">
                   {report.reportNo}
                 </h1>

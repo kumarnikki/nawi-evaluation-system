@@ -5,7 +5,7 @@
  * using cryptographic SHA-256 hashes and national registry lookups.
  */
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import {
   ShieldCheck,
   CheckCircle,
@@ -15,6 +15,7 @@ import {
   Award,
   Hash,
   ArrowLeft,
+  Home,
   FileText,
 } from 'lucide-react'
 import mockDb, { SEED_INSTRUMENTS } from '@/data/mockDb'
@@ -30,6 +31,7 @@ async function computeSHA256(text: string): Promise<string> {
 }
 
 export default function VerifyPage() {
+  const navigate = useNavigate()
   const { type: paramType, id: paramId } = useParams<{ type?: string; id?: string }>()
 
   const [verifyType, setVerifyType] = useState<'report' | 'cert'>(
@@ -121,19 +123,41 @@ export default function VerifyPage() {
         }}
       />
 
-      <header className="bg-navy-900 text-white px-6 py-4 shadow flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full border border-saffron-400 flex items-center justify-center">
-            <Scale className="w-4 h-4 text-saffron-400" />
-          </div>
-          <div>
-            <div className="text-sm font-bold">Public Verification Portal</div>
-            <div className="text-xs text-navy-300">Department of Consumer Affairs, Govt. of India</div>
-          </div>
-        </Link>
-        <Link to="/login" className="btn btn-sm btn-outline text-white border-white/40">
-          Officer Login →
-        </Link>
+      <header className="bg-navy-900 text-white px-6 py-3.5 shadow flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            title="Go Back"
+          >
+            <ArrowLeft size={16} />
+          </button>
+          <Link
+            to="/"
+            className="p-1.5 rounded-lg border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            title="Portal Home"
+          >
+            <Home size={16} />
+          </Link>
+          <Link to="/" className="flex items-center gap-2.5 border-l border-white/20 pl-3">
+            <div className="w-8 h-8 rounded-full border border-saffron-400 flex items-center justify-center">
+              <Scale className="w-4 h-4 text-saffron-400" />
+            </div>
+            <div>
+              <div className="text-sm font-bold leading-tight">Public Verification Portal</div>
+              <div className="text-[11px] text-navy-300 leading-tight">Department of Consumer Affairs, Govt. of India</div>
+            </div>
+          </Link>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link to="/dashboard" className="btn btn-sm btn-ghost text-white hover:bg-white/10">
+            Dashboard
+          </Link>
+          <Link to="/login" className="btn btn-sm btn-saffron font-bold text-white shadow-sm">
+            Officer Login →
+          </Link>
+        </div>
       </header>
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-10 space-y-8">
