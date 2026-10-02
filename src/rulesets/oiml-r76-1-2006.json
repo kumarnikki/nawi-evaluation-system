@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "oiml-r76-1-2006",
+  "name": "OIML R 76-1:2006",
+  "edition": 2006,
+  "effectiveDate": "2006-01-01",
+  "description": "Non-automatic weighing instruments — Requirements and test procedures",
+  "version": "1.0.0",
+
+  "table3": {
+    "_comment": "Scale interval e ranges and n limits per accuracy class (R 76-1 clause 3.2, Table 3)",
+    "I": [
+      { "eMin_g": 0.001, "eMax_g": null, "nMin": 50000, "nMax": null, "minDivisions": 100 }
+    ],
+    "II": [
+      { "eMin_g": 0.001, "eMax_g": 0.05, "nMin": 100, "nMax": 100000, "minDivisions": 20 },
+      { "eMin_g": 0.1, "eMax_g": null, "nMin": 5000, "nMax": 100000, "minDivisions": 50 }
+    ],
+    "III": [
+      { "eMin_g": 0.1, "eMax_g": 2, "nMin": 100, "nMax": 10000, "minDivisions": 20 },
+      { "eMin_g": 5, "eMax_g": null, "nMin": 500, "nMax": 10000, "minDivisions": 20 }
+    ],
+    "IIII": [
+      { "eMin_g": 5, "eMax_g": null, "nMin": 100, "nMax": 1000, "minDivisions": 10 }
+    ]
+  },
+
+  "table4": {
+    "_comment": "Multi-interval partial n lower limits per class (R 76-1 clause 3.5, Table 4)",
+    "I": 50000,
+    "II": 5000,
+    "III": 500,
+    "IIII": 50
+  },
+
+  "table6": {
+    "_comment": "Maximum permissible errors on initial verification (R 76-1 clause 3.6.1, Table 6). Thresholds in number of e.",
+    "I":    { "t1": 50000,  "t2": 200000, "mpe1_e": 0.5, "mpe2_e": 1.0, "mpe3_e": 1.5 },
+    "II":   { "t1": 5000,   "t2": 20000,  "t3": 100000, "mpe1_e": 0.5, "mpe2_e": 1.0, "mpe3_e": 1.5 },
+    "III":  { "t1": 500,    "t2": 2000,   "t3": 10000,  "mpe1_e": 0.5, "mpe2_e": 1.0, "mpe3_e": 1.5 },
+    "IIII": { "t1": 50,     "t2": 200,    "t3": 1000,   "mpe1_e": 0.5, "mpe2_e": 1.0, "mpe3_e": 1.5 }
+  },
+
+  "inServiceMpeMultiplier": 2,
+
+  "eValidForms": [1, 2, 5],
+  "eMaxRatioToD": 10,
+
+  "temperatureDefaults": {
+    "_comment": "Default operating temperature limits (R 76-1 clause 3.9.2.1)",
+    "min_C": -10,
+    "max_C": 40,
+    "minRangeByClass": { "I": 5, "II": 15, "III": 30, "IIII": 30 }
+  },
+
+  "temperatureEffect": {
+    "_comment": "Temperature effect on zero (R 76-1 clause 3.9.2.3, A.5.3.2)",
+    "limits_e_per_C": {
+      "I": 1.0,
+      "II_III_IIII_per_5C": 1.0
+    }
+  },
+
+  "zeroReturnLimit_e": 0.5,
+  "zeroReturnLimit_e1_multiInterval": 0.5,
+
+  "creep": {
+    "_comment": "R 76-1 A.4.11.1",
+    "earlyTermination": {
+      "within30min_limit_e": 0.5,
+      "change_15_to_30min_limit_e": 0.2
+    },
+    "over4h_limit_e_mpe": true,
+    "tempVariationWarning_C": 2
+  },
+
+  "repeatability": {
+    "_comment": "R 76-1 A.4.10",
+    "pass_condition": "Pmax_minus_Pmin_le_mpe"
+  },
+
+  "discrimination": {
+    "_comment": "R 76-1 A.4.8 / 3.8",
+    "digital_extraLoad_fraction_of_d": 0.1,
+    "digital_totalCheck_fraction_of_d": 1.4,
+    "analogue_extraLoad_fraction_of_mpe": 1.0,
+    "analogue_displacement_min_fraction": 0.7,
+    "nonSelfIndicating_extraLoad_fraction_of_mpe": 0.4
+  },
+
+  "eccentricity": {
+    "_comment": "R 76-1 A.4.7",
+    "testLoad_fraction_of_max_plus_tare": 0.333,
+    "testLoad_fraction_per_support_lt4": 0.333,
+    "testLoad_fraction_per_support_gt4": 0.111,
+    "rollingLoad_max_fraction": 0.8
+  },
+
+  "tilt": {
+    "_comment": "R 76-1 A.5.1; class II/III/IIII only",
+    "default_limit_percent": 5.0,
+    "level_indicator_limit_percent": 0.2,
+    "noLoadLimit_e": 2,
+    "loadedLimit_uses_mpe": true,
+    "applicableClasses": ["II", "III", "IIII"]
+  },
+
+  "warmup": {
+    "_comment": "R 76-1 A.5.2",
+    "checkpoints_min": [0, 5, 15, 30],
+    "pass_condition": "abs_EL_minus_E0_le_mpe"
+  },
+
+  "voltageVariations": {
+    "_comment": "R 76-1 A.5.4",
+    "mains": { "lowFactor": 0.85, "highFactor": 1.10 },
+    "externalSupply": { "lowIsMinOperating": true, "highFactor": 1.20 },
+    "nonRechargeableBattery": { "lowIsMinOperating": true, "highFactor": 1.00 },
+    "roadVehicle": { "low12V": 10, "high12V": 16, "low24V": 16, "high24V": 32 }
+  },
+
+  "electricalDisturbances": {
+    "_comment": "R 76-1 B.3 / T.5",
+    "shortTimePowerReduction": {
+      "reduction0pct_cycles": 0.5,
+      "reduction50pct_cycles": 1,
+      "repetitions": 10
+    },
+    "bursts": {
+      "powerLines_kV": 1,
+      "duration_min_each_polarity": 1,
+      "ioLines_kV": 0.5
+    },
+    "esd": {
+      "contactVoltages_kV": [2, 4, 6],
+      "airVoltages_kV": [8],
+      "minDischarges": 10
+    },
+    "radiatedEMF": {
+      "frequencyRange_MHz": [26, 1000],
+      "fieldStrength_Vm": 3,
+      "modulation_pct": 80,
+      "modulationFreq_Hz": 1000,
+      "facings": 4,
+      "polarizations": 2
+    },
+    "surge": {
+      "_comment": "R 76-1 B.3.3 — assumed parameters; confirm from PDF",
+      "lineToLine_kV": 1,
+      "lineToEarth_kV": 2,
+      "repetitions": 5
+    },
+    "conductedRF": {
+      "_comment": "R 76-1 B.3.6 — assumed parameters; confirm from PDF",
+      "freqRange_kHz_to_MHz": [150, 80],
+      "level_dBuV": 140,
+      "modulation_pct": 80,
+      "modulationFreq_Hz": 1000
+    }
+  },
+
+  "dampHeat": {
+    "_comment": "R 76-1 B.2.2",
+    "notApplicableClasses": ["I"],
+    "notApplicableCondition": "class_II_e_lt_1g",
+    "refTemp_C": 20,
+    "refHumidity_pct": 50,
+    "highHumidity_pct": 85,
+    "minLoadCount": 5
+  },
+
+  "spanStability": {
+    "_comment": "R 76-1 B.4",
+    "notApplicableClasses": ["I"],
+    "minMeasurements": 8,
+    "maxDays": 28,
+    "minInterval_days": 0.5,
+    "maxInterval_days": 10,
+    "mainsPowerOffDurations_h": 8,
+    "stabilizationAfterDisconnect_h": 5,
+    "stabilizationAfterTempAndDampHeat_h": 16,
+    "readingsPerMeasurement": 5,
+    "singleReadingCondition_limit_e": 0.1,
+    "passLimit_e": 0.5,
+    "_passLimitNote": "Variation (max - min) of (EL-E0) over all measurements must not exceed this; CONFIRM against B.4 of r076-1-e06.pdf"
+  },
+
+  "endurance": {
+    "_comment": "R 76-1 A.6; class II/III/IIII with Max ≤ 100 kg",
+    "applicableClasses": ["II", "III", "IIII"],
+    "maxCapacity_kg": 100,
+    "loadings": 100000,
+    "testLoad_fraction": 0.5,
+    "pass_condition": "abs_Ec_initial_minus_Ec_final_le_mpe"
+  },
+
+  "tare": {
+    "accuracy_limit_e": 0.25
+  },
+
+  "zeroSetting": {
+    "accuracy_limit_e": 0.25
+  },
+
+  "stabilityOfEquilibrium": {
+    "_comment": "R 76-1 A.4.12",
+    "trials": 5,
+    "adjacentFiguresOnly": true
+  },
+
+  "initialZeroSetting": {
+    "range_pct_of_max_default": 20,
+    "supplementaryTest_if_above_pct": 20
+  },
+
+  "checklist": {
+    "_source": "R 76-2 pages 46-56 — items keyed by R 76-1 clause"
+  }
+}
