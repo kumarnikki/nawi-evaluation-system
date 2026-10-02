@@ -51,7 +51,8 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/verify" element={<VerifyPage />} />
-            <Route path="/verify/:type/:id" element={<VerifyPage />} />
+            <Route path="/verify/:type/*" element={<VerifyPage />} />
+            <Route path="/verify/:type" element={<VerifyPage />} />
 
             {/* Protected routes — any authenticated user */}
             <Route path="/dashboard" element={

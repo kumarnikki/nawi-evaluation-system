@@ -5,7 +5,7 @@
  * using cryptographic SHA-256 hashes and national registry lookups.
  */
 import React, { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ShieldCheck,
   CheckCircle,
@@ -32,12 +32,16 @@ async function computeSHA256(text: string): Promise<string> {
 
 export default function VerifyPage() {
   const navigate = useNavigate()
-  const { type: paramType, id: paramId } = useParams<{ type?: string; id?: string }>()
+  const { type: paramType, id: paramId, '*': wildcard } = useParams<{ type?: string; id?: string; '*': string }>()
+  const [searchParams] = useSearchParams()
 
-  const [verifyType, setVerifyType] = useState<'report' | 'cert'>(
-    paramType === 'cert' ? 'cert' : 'report'
-  )
-  const [query, setQuery] = useState(paramId || '')
+  const rawQuery = wildcard || paramId || searchParams.get('id') || searchParams.get('q') || ''
+  const decodedQuery = decodeURIComponent(rawQuery).trim()
+  const initialType: 'report' | 'cert' =
+    paramType === 'cert' || searchParams.get('type') === 'cert' ? 'cert' : 'report'
+
+  const [verifyType, setVerifyType] = useState<'report' | 'cert'>(initialType)
+  const [query, setQuery] = useState(decodedQuery)
   const [result, setResult] = useState<{
     found: boolean
     data?: any
@@ -56,7 +60,10 @@ export default function VerifyPage() {
     if (targetType === 'report') {
       const reports = mockDb.getReports()
       const match = reports.find(
-        (r) => r.reportNo.toLowerCase() === q.toLowerCase() || r.id === q
+        (r) =>
+          r.reportNo.toLowerCase() === q.toLowerCase() ||
+          r.reportNo.replace(/[\/\s-]/g, '').toLowerCase() === q.replace(/[\/\s-]/g, '').toLowerCase() ||
+          r.id === q
       )
 
       if (match) {
@@ -78,7 +85,10 @@ export default function VerifyPage() {
     } else {
       const certs = getCertificates()
       const match = certs.find(
-        (c) => c.certNo.toLowerCase() === q.toLowerCase() || c.id === q
+        (c) =>
+          c.certNo.toLowerCase() === q.toLowerCase() ||
+          c.certNo.replace(/[\/\s-]/g, '').toLowerCase() === q.replace(/[\/\s-]/g, '').toLowerCase() ||
+          c.id.toLowerCase() === q.toLowerCase()
       )
 
       if (match) {
@@ -102,11 +112,12 @@ export default function VerifyPage() {
   }
 
   useEffect(() => {
-    if (paramId) {
-      setQuery(paramId)
-      performVerification(paramId, paramType === 'cert' ? 'cert' : 'report')
+    if (decodedQuery) {
+      setQuery(decodedQuery)
+      setVerifyType(initialType)
+      performVerification(decodedQuery, initialType)
     }
-  }, [paramId, paramType])
+  }, [decodedQuery, initialType])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
