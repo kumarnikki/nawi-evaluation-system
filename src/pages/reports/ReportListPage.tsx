@@ -19,6 +19,7 @@ import {
 import mockDb from '@/data/mockDb'
 import type { Report, ReportStatus, AccuracyClass } from '@/types'
 import { useAuth } from '@/contexts/AuthContext'
+import Layout from '@/components/layout/Layout'
 import { exportReportToPdf } from '@/export/pdfExport'
 import { exportReportToDocx } from '@/export/docxExport'
 
@@ -108,32 +109,28 @@ export default function ReportListPage() {
   const canCreate = hasRole('admin', 'technician')
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-[#0d2137] text-white px-6 py-4 shadow-lg">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <Layout title="Evaluation Reports">
+      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-lg font-bold tracking-tight flex items-center gap-2">
-              <FileText size={20} className="text-[#FF9933]" />
+            <h1 className="text-2xl font-extrabold text-navy-900 flex items-center gap-2">
+              <FileText size={24} className="text-[#FF9933]" />
               Evaluation Reports
             </h1>
-            <p className="text-xs text-gray-300 mt-0.5">
-              {filtered.length} report{filtered.length !== 1 ? 's' : ''} found
+            <p className="text-xs text-gray-500 mt-1">
+              {filtered.length} report{filtered.length !== 1 ? 's' : ''} found in database
             </p>
           </div>
           {canCreate && (
             <Link
               to="/reports/new"
-              className="flex items-center gap-2 bg-[#FF9933] hover:bg-orange-500 text-white font-bold text-sm px-4 py-2 rounded-xl shadow transition-colors"
+              className="btn btn-saffron inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold shadow-sm"
             >
               <Plus size={16} />
-              Create New
+              Start New Evaluation
             </Link>
           )}
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 py-6">
         {/* Filters row */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           {/* Search */}
@@ -374,7 +371,7 @@ export default function ReportListPage() {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   )
 }

@@ -29,7 +29,9 @@ import {
   ChevronRight,
   TrendingUp,
   AlertTriangle,
+  FilePlus2,
 } from 'lucide-react'
+import Layout from '@/components/layout/Layout'
 import { useAuth } from '@/contexts/AuthContext'
 import mockDb from '@/data/mockDb'
 import type { ReportStatus } from '@/types'
@@ -161,26 +163,38 @@ export default function DashboardPage() {
   const today = format(new Date(), "EEEE, d MMMM yyyy")
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-screen-xl mx-auto">
+    <Layout title="Dashboard">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-screen-xl mx-auto">
 
-      {/* ── Page title ──────────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div>
-          <h1 className="text-navy-900 text-2xl font-extrabold">Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-0.5">{today}</p>
-        </div>
-        {user && (
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <p className="text-navy-800 text-sm font-semibold leading-tight">{user.name}</p>
-              <p className="text-gray-500 text-xs capitalize">{user.role}</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-navy-900 flex items-center justify-center text-white font-bold text-sm uppercase flex-shrink-0">
-              {user.name.trim().charAt(0)}
-            </div>
+        {/* ── Page title & Action button ────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-navy-900 text-2xl font-extrabold">Dashboard</h1>
+            <p className="text-gray-500 text-sm mt-0.5">{today}</p>
           </div>
-        )}
-      </div>
+          <div className="flex items-center gap-3">
+            {hasRole('admin', 'technician') && (
+              <Link
+                to="/reports/new"
+                className="btn btn-saffron inline-flex items-center gap-2 px-4 py-2 rounded-lg font-bold shadow-sm"
+              >
+                <FilePlus2 className="w-4 h-4" />
+                Start New Evaluation
+              </Link>
+            )}
+            {user && (
+              <div className="flex items-center gap-3 border-l border-gray-200 pl-3">
+                <div className="text-right hidden sm:block">
+                  <p className="text-navy-800 text-sm font-semibold leading-tight">{user.name}</p>
+                  <p className="text-gray-500 text-xs capitalize">{user.role}</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-navy-900 flex items-center justify-center text-white font-bold text-sm uppercase flex-shrink-0">
+                  {user.name.trim().charAt(0)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
       {/* ── Stat cards ──────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -449,5 +463,6 @@ export default function DashboardPage() {
 
       </div>
     </div>
+  </Layout>
   )
 }
